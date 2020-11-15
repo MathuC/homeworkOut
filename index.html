@@ -12,20 +12,20 @@
 <a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-7px;position:absolute;color:black;right:0;" href="about.html">About HomeworkOut</a>
 <br>
 <center>
-	<img src="img/title.png" width="600" height="80" class="animate__animated animate__flipInX">
+	<img src="img/title2.png" width="500" height="60" class="animate__animated animate__flipInX">
 </center>
 <br>
-<h5 align="center">Workout. Study. Play. Repeat.</h5>
-<br>
+<h5 align="center">Workout. Study. Break. Repeat.</h5>
 <center>
 <div id="replace">
+<br>
 	<div class="container">
 		<div class="login-box">
 				<div class="col-md-4"> <!--As you can see there are twoo classes. The class that is at the right overrides the bootstrap class if they overlap. Bootstrap class. There are 12 columns so col-md-6 means there will be 2 columns -->
 					<h1>TIMER</h1>
 					<form action="javascript:userStart()" method="get" autocomplete= off> <!-- This explains very well HTML forms and the type attribute https://www.w3schools.com/tags/att_input_type.asp -->
 						<div class="form-group">
-							<label>Duration (Hours)</label>
+							<label>Time (hrs)</label>
 							<select class="form-control" id="duration" name="duration">
 								<option>0:30</option>
 								<option selected="selected">1:00</option>
@@ -66,10 +66,29 @@
 <script>
 var fitness; //fitness level
 var duration=0; //duration of timer
-stopBtn=0; //stop button not clicked
+var stopBtn=0; //stop button not clicked
+var globalEnd=0; //when the global timer reaches the end
 var alarm = new Audio('Audio/alarm.wav');
 var clap = new Audio('Audio/clap.mp3');
 var clock = new Audio('Audio/clock.wav');
+var whistle = new Audio('Audio/whistle.wav');
+var current; //workout, study, break
+var t=0;
+
+function stop(){
+	if (document.getElementById("stop").innerHTML=="Pause") {
+		document.getElementById("stop").innerHTML="Resume";
+		stopBtn=1; //clicked
+	} else {
+		document.getElementById("stop").innerHTML="Pause";
+		stopBtn=0;
+		rawT= document.getElementById("text").innerHTML;
+		listT=rawT.split(":");
+		tValue=parseInt(listT[0])*60;
+		tValue=tValue+parseInt(listT[1]);
+		timer(tValue);
+	}
+}
 
 
 function userStart() { //when user presses start
@@ -89,23 +108,22 @@ function userStart() { //when user presses start
 	}
 	document.getElementById("replace").innerHTML=timerHTML;
 	globalTimer();
-	workout();
 	document.getElementById("stop").addEventListener("click", stop()); //without this line the onclick event is activated when you click on the button so you have to click it 2 times first for it to work.
+	workout();
 }
 
 function globalTimer(){
-	//var t=duration*30*60;
-	var t=10
+	var tg=duration*30*60;
 	function globalDecrement(){
-		second=t%60;
-		minute=((t-second)/60)%60;
-		hour=((t-second)/60-minute)/60;
-		if (t>3599){
+		second=tg%60;
+		minute=((tg-second)/60)%60;
+		hour=((tg-second)/60-minute)/60;
+		if (tg>3599){
 			display=""+hour+":";
 		} else {
 			display="0:";
 		}
-		if (t-hour*60*60>599){
+		if (tg-hour*60*60>599){
 			if (second==0) {
 				display=display+""+minute+":"+"00";
 			} else if (second<10) {
@@ -113,7 +131,7 @@ function globalTimer(){
 			} else {
 				display=display+""+minute+":"+second;
 			}
-		} else if (t-hour*60*60>59) {
+		} else if (tg-hour*60*60>59) {
 			if (second==0) {
 				display=display+"0"+minute+":"+"00";
 			} else if (second<10) {
@@ -130,27 +148,27 @@ function globalTimer(){
 				display=display+"00"+":"+second;
 			}
 		} 
-		t=t-1;
-		document.getElementById("global").innerHTML="Total Time Remaining: "+display;
-		if (t>-1) {
+		tg=tg-1;
+		document.getElementById("global").innerHTML="Total time remaining: "+display;
+		if (tg>-1) {
 			setTimeout(globalDecrement,1000);
 		}
-		if(t==-1){
-			clap.play(); 
-			clearTimeout(next); //stop everything
-			document.getElementById("text").innerHTML="Done.";
+		if(tg==-1){
+			globalEnd=1;
 		}
 	}
 	globalDecrement();
 }
 
 function timer(t){ //t is in seconds
+	/*
 	if (t === undefined) {
 		rawT= document.getElementById("text").innerHTML;
 		listT=rawT.split(":");
 		t=parseInt(listT[0])*60;
 		t=t+parseInt(listT[1]);
 	}
+	*/
 	function decrement(){
 		if (stopBtn==1) {
 			return; //if Stop button has been clicked
@@ -183,44 +201,81 @@ function timer(t){ //t is in seconds
 			}
 		} 
 		t=t-1;
+		if (t>-1) {
+			//add time to study or workout depending on current
+		}
 		document.getElementById("text").innerHTML=display;
+		if (globalEnd==1) {
+			clap.play(); 
+			document.getElementById("text").innerHTML="Done.";
+			document.getElementById("stop").style.visibility = "hidden";
+			t=-1;
+		}
 		if (t>-1 && stopBtn==0) {
-			next=setTimeout(decrement,1000);
+			setTimeout(decrement,1000);
 		}
 		if(t==2){ //signals approaching alarm
 			clock.play();
 		}
-		if(t==-1){
-			alarm.play(); 
+		if(t<0){
+			alarm.play();
+			if (current=="workout"){
+				study();
+			} else if (current=="study") {
+				breakTime();
+			} else if (current=="breakTime") {
+				workout();
+			}
 		}
 	}
 	decrement();
 }
 
-function stop(){
-	if (document.getElementById("stop").innerHTML=="Stop") {
-		document.getElementById("stop").innerHTML="Resume";
-		stopBtn=1; //clicked
-	} else {
-		document.getElementById("stop").innerHTML="Stop";
-		stopBtn=0;
-		timer();
-	}
-}
+
 
 function workout(){
-	timer(15);
+	document.getElementById("title").innerHTML="Workout";
+	current="workout";
+	timer(180);
+	document.getElementById("stop").style.visibility = "hidden"; //you can't stop in the middle of working out
+	document.getElementById("instruction").innerHTML= "Get Ready<br>Workout starts in 10 seconds";
+	setTimeout(function(){document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>30 seconds";whistle.play();},10*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},40*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>30 seconds";whistle.play();},50*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},80*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="SQUATS"+"<br>30 seconds";whistle.play();},90*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},120*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>30 seconds";whistle.play();},130*1000);
+	setTimeout(function(){document.getElementById("instruction").innerHTML="Hydrate yourself &#128166; <br>Get ready to start studying";whistle.play();},160*1000);
+}
+
+function study(){
+	current="study"; 
+	document.getElementById("title").innerHTML="STUDY";
+	timer(1320);
+	document.getElementById("stop").style.visibility = "visible";
+	document.getElementById("instruction").innerHTML="22 minutes of complete focus &#129327;";
+	
+}
+
+function breakTime(){
+	current="breakTime"; 
+	document.getElementById("title").innerHTML="BREAK";
+	timer(300);
+	document.getElementById("stop").style.visibility = "visible";
+	document.getElementById("instruction").innerHTML="5 minutes to relax &#128524;";
 }
 
 
 timerHTML=`
+<b><p style="font-size:15px;" id="global"></p></b>
 <div id="container">
   <img id="image" src="img/timerWhite3.png">
+  <p id="title">WORKOUT</p>
   <p id="text"></p> 
 </div>
-<button onclick="stop()" class="btn btn-secondary" id="stop"> Stop </button>
-<br><br>
-<b><p style="font-size:15px;" id="global"></p></b>
+<button onclick="javascript:stop()" class="btn btn-secondary" id="stop"> Pause </button>
+<p id="instruction" style="font-family:Trebuchet MS;font-weight:normal;font-size:50px;line-height:50px;"></p>
 `;
 
 

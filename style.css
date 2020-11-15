@@ -6,7 +6,7 @@ html{
 body{
 	max-width: 100%;
 	/*background: url("ArtistsImg/backgroundGrey.png"), linear-gradient(to top,rgba(250,170,170,0.85) , rgba(250,100,100,0.85));*/
-	background: url("img/background.png"), linear-gradient(to top,rgba(255,255,255,0.85) , rgba(255,255,255,1));
+	background: url("img/background.png"), linear-gradient(to top,rgba(255,255,255,0.75) , rgba(255,255,255,1));
 	background-blend-mode: overlay;
 	background-size: cover;
 	background-position: center;
@@ -113,7 +113,18 @@ ul {
 	left: 183px;
 	top: 150px;
 }
-
+#title {
+	margin:0;
+	padding:0;
+	font-family: Courier;
+	z-index: 100;
+	position: absolute;
+	color: black;
+	font-size: 20px;
+	font-weight: bold;
+	left: 275px;
+	top: 100px;
+}
 
 .col-md-4{
 	background: rgba(250,150,150,0.4);
@@ -133,26 +144,11 @@ ul {
 }
 
 .btn-secondary {
-    background-color: #E00000 !important; /*Overrides bootstrap's class. Found these properties going on the link of bootstrap cdn and control+f ".btn-primary" */
+    background-color: #909090 !important; /*Overrides bootstrap's class. Found these properties going on the link of bootstrap cdn and control+f ".btn-primary" */
 	border-color:#999999 !important;
 	font-weight:bold !important;
 }
 
-.btn-secondary:hover #stop {
-	background-color: #A00000 !important;
+.btn-secondary:hover {
+	background-color: #505050 !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
