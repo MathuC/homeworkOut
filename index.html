@@ -57,6 +57,8 @@
 				</div>
 		</div>
 	</div>
+<br>
+<iframe style="border:white;width:380px;" src="get.php"></iframe>
 </div>
 </center>
 <br><br><br>
@@ -92,7 +94,6 @@ function stop(){
 	}
 }
 
-
 function userStart() { //when user presses start
 	rawDuration= document.getElementById("duration").value;
 	listDur=rawDuration.split(":");
@@ -115,8 +116,8 @@ function userStart() { //when user presses start
 }
 
 function globalTimer(){
-	//var tg=duration*30*60;
-	var tg=4;
+	var tg=duration*30*60;
+	//var tg=4;
 	function globalDecrement(){
 		second=tg%60;
 		minute=((tg-second)/60)%60;
@@ -260,21 +261,33 @@ function timer(t){ //t is in seconds
 	decrement();
 }
 
-
-
 function workout(){
 	document.getElementById("title").innerHTML="WORKOUT";
 	current="workout";
 	timer(180);
 	document.getElementById("stop").style.visibility = "hidden"; //you can't stop in the middle of working out
 	document.getElementById("instruction").innerHTML= "Get Ready<br>Workout starts in "+rest+" seconds";
-	workout1=setTimeout(function(){document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>"+work+" seconds";whistle.play();},rest*1000);
+	workout1=setTimeout(function(){
+		document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>"+work+" seconds"+"<br><img src='img/pushups.gif'>";
+		whistle.play();
+	},rest*1000);
 	workout2=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(rest+work)*1000);
-	workout3=setTimeout(function(){document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>"+work+" seconds";whistle.play();},(2*rest+work)*1000);
-	workout4=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(2*rest+2*work)*1000);
-	workout5=setTimeout(function(){document.getElementById("instruction").innerHTML="SQUATS"+"<br>"+work+" seconds";whistle.play();},(3*rest+2*work)*1000);
-	workout6=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(3*rest+3*work)*1000);
-	workout7=setTimeout(function(){document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>"+work+" seconds";whistle.play();},(4*rest+3*work)*1000);
+	workout3=setTimeout(function(){
+		document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>"+work+" seconds"+"<br><img src='img/jumpingJacks.gif'>";
+		whistle.play();
+	},(2*rest+work)*1000);
+	workout4=setTimeout(function(){
+		document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(2*rest+2*work)*1000);
+	workout5=setTimeout(function(){
+		document.getElementById("instruction").innerHTML="SQUATS"+"<br>"+work+" seconds"+"<br><img src='img/squats.gif'>";
+		whistle.play();
+	},(3*rest+2*work)*1000);
+	workout6=setTimeout(function(){
+		document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(3*rest+3*work)*1000);
+	workout7=setTimeout(function(){
+		document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>"+work+" seconds"+"<br><img src='img/situps.gif'>";
+		whistle.play();
+		},(4*rest+3*work)*1000);
 	workout8=setTimeout(function(){document.getElementById("instruction").innerHTML="Hydrate yourself &#128166; <br>Get ready to start studying";whistle.play();},(4*rest+4*work)*1000);
 }
 
@@ -324,7 +337,6 @@ function sendData(){
 	}
 }
 
-
 timerHTML=`
 <br>
 <b><p style="font-size:17px;" id="global"></p></b>
@@ -336,8 +348,6 @@ timerHTML=`
 <button onclick="javascript:stop()" class="btn btn-secondary" id="stop"> Pause </button>
 <p id="instruction" style="font-family:Trebuchet MS;font-weight:normal;font-size:50px;line-height:50px;"></p>
 `;
-
-
 
 </script>
 </html>
