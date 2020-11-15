@@ -8,14 +8,13 @@
 	<link rel="shortcut icon" href="img/favicon.png">
 </head>
 <body>
-<a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-6px;position:absolute;color:black;left:6;" href="https://mathusan.net">mathusan.net</a>
-<a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-7px;position:absolute;color:black;right:0;" href="about.html">About HomeworkOut</a>
+<a style="font-size:17px;font-family:Courier;margin-right:5px;margin-top:-6px;position:absolute;color:black;left:6;" href="https://mathusan.net">mathusan.net</a>
+<a style="font-size:17px;font-family:Courier;margin-right:5px;margin-top:-7px;position:absolute;color:black;right:0;" href="about.html">About HomeworkOut</a>
 <br>
 <center>
 	<img src="img/title2.png" width="500" height="60" class="animate__animated animate__flipInX">
 </center>
-<br>
-<h5 align="center">Workout. Study. Break. Repeat.</h5>
+<h4 align="center">Workout. Study. Break. Repeat.</h4>
 <center>
 <div id="replace">
 <br>
@@ -61,7 +60,7 @@
 </div>
 </center>
 <br><br><br>
-<p id="footnote" align="center">Created By Mathusan Chandramohan & Louca Dufault for McGill Code.Jam 2020</p>
+<!--<p id="footnote" align="center">Created By Mathusan Chandramohan & Louca Dufault for McGill Code.Jam 2020</p>-->
 </body>
 <script>
 var fitness; //fitness level
@@ -106,8 +105,8 @@ function userStart() { //when user presses start
 		work=20;
 		rest=20;
 	} else {
-		work=5;
-		rest=5;
+		work=30;
+		rest=10;
 	}
 	document.getElementById("replace").innerHTML=timerHTML;
 	globalTimer();
@@ -116,8 +115,7 @@ function userStart() { //when user presses start
 }
 
 function globalTimer(){
-	//var tg=duration*30*60;
-	var tg=4;
+	var tg=duration*30*60;
 	function globalDecrement(){
 		second=tg%60;
 		minute=((tg-second)/60)%60;
@@ -156,7 +154,7 @@ function globalTimer(){
 		if (challenge==null) {
 			challenge=display;
 		}
-		document.getElementById("global").innerHTML="Total time remaining: "+display;
+		document.getElementById("global").innerHTML="Time remaining: "+display;
 		if (tg>-1) {
 			setTimeout(globalDecrement,1000);
 		}
@@ -263,15 +261,15 @@ function workout(){
 	current="workout";
 	timer(180);
 	document.getElementById("stop").style.visibility = "hidden"; //you can't stop in the middle of working out
-	document.getElementById("instruction").innerHTML= "Get Ready<br>Workout starts in 10 seconds";
-	workout1=setTimeout(function(){document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>30 seconds";whistle.play();},10*1000);
-	workout2=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},40*1000);
-	workout3=setTimeout(function(){document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>30 seconds";whistle.play();},50*1000);
-	workout4=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},80*1000);
-	workout5=setTimeout(function(){document.getElementById("instruction").innerHTML="SQUATS"+"<br>30 seconds";whistle.play();},90*1000);
-	workout6=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},120*1000);
-	workout7=setTimeout(function(){document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>30 seconds";whistle.play();},130*1000);
-	workout8=setTimeout(function(){document.getElementById("instruction").innerHTML="Hydrate yourself &#128166; <br>Get ready to start studying";whistle.play();},160*1000);
+	document.getElementById("instruction").innerHTML= "Get Ready<br>Workout starts in "+rest+" seconds";
+	workout1=setTimeout(function(){document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>"+work+" seconds";whistle.play();},rest*1000);
+	workout2=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(rest+work)*1000);
+	workout3=setTimeout(function(){document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>"+work+" seconds";whistle.play();},(2*rest+work)*1000);
+	workout4=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(2*rest+2*work)*1000);
+	workout5=setTimeout(function(){document.getElementById("instruction").innerHTML="SQUATS"+"<br>"+work+" seconds";whistle.play();},(3*rest+2*work)*1000);
+	workout6=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>"+rest+" seconds";whistle.play();},(3*rest+3*work)*1000);
+	workout7=setTimeout(function(){document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>"+work+" seconds";whistle.play();},(4*rest+3*work)*1000);
+	workout8=setTimeout(function(){document.getElementById("instruction").innerHTML="Hydrate yourself &#128166; <br>Get ready to start studying";whistle.play();},(4*rest+4*work)*1000);
 }
 
 function study(){
@@ -312,7 +310,8 @@ function pad(no){
 
 
 timerHTML=`
-<b><p style="font-size:15px;" id="global"></p></b>
+<br>
+<b><p style="font-size:17px;" id="global"></p></b>
 <div id="container">
   <img id="image" src="img/timerWhite3.png">
   <p id="title"></p>
