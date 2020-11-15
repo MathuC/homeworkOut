@@ -74,6 +74,9 @@ var clock = new Audio('Audio/clock.wav');
 var whistle = new Audio('Audio/whistle.wav');
 var current; //workout, study, break
 var t=0;
+var challenge; //variable to save the total duration the user wants to get to
+var workoutTime=0; //total workout and study time variable in seconds
+var studyTime=0;
 
 function stop(){
 	if (document.getElementById("stop").innerHTML=="Pause") {
@@ -113,7 +116,8 @@ function userStart() { //when user presses start
 }
 
 function globalTimer(){
-	var tg=duration*30*60;
+	//var tg=duration*30*60;
+	var tg=4;
 	function globalDecrement(){
 		second=tg%60;
 		minute=((tg-second)/60)%60;
@@ -149,6 +153,9 @@ function globalTimer(){
 			}
 		} 
 		tg=tg-1;
+		if (challenge==null) {
+			challenge=display;
+		}
 		document.getElementById("global").innerHTML="Total time remaining: "+display;
 		if (tg>-1) {
 			setTimeout(globalDecrement,1000);
@@ -201,15 +208,24 @@ function timer(t){ //t is in seconds
 			}
 		} 
 		t=t-1;
-		if (t>-1) {
-			//add time to study or workout depending on current
-		}
 		document.getElementById("text").innerHTML=display;
 		if (globalEnd==1) {
 			clap.play(); 
 			document.getElementById("text").innerHTML="Done.";
 			document.getElementById("stop").style.visibility = "hidden";
 			t=-1;
+			//if workout has already started the timeout functions WILL happen so that's why I declared them with variables and used clearTimeout to deactivate them
+			clearTimeout(workout1);
+			clearTimeout(workout2);
+			clearTimeout(workout3);
+			clearTimeout(workout4);
+			clearTimeout(workout5);
+			clearTimeout(workout6);
+			clearTimeout(workout7);
+			clearTimeout(workout8);
+			
+			document.getElementById("instruction").innerHTML="Congratulations!<br>You've reached your goal: "+challenge+"<br>"+"Total study time: "+formatTotal(studyTime)+"<br>"+"Total workout time: "+formatTotal(workoutTime);
+			document.getElementById("title").innerHTML="";
 		}
 		if (t>-1 && stopBtn==0) {
 			setTimeout(decrement,1000);
@@ -219,12 +235,21 @@ function timer(t){ //t is in seconds
 		}
 		if(t<0){
 			alarm.play();
-			if (current=="workout"){
-				study();
-			} else if (current=="study") {
-				breakTime();
-			} else if (current=="breakTime") {
-				workout();
+			if (globalEnd==0){
+				if (current=="workout"){
+					study();
+				} else if (current=="study") {
+					breakTime();
+				} else if (current=="breakTime") {
+					workout();
+				}
+			}
+		}
+		if (t>-1) {
+			if (current=="study"){
+				studyTime=studyTime+1;
+			} else if (current=="workout") {
+				workoutTime=workoutTime+1;
 			}
 		}
 	}
@@ -234,19 +259,19 @@ function timer(t){ //t is in seconds
 
 
 function workout(){
-	document.getElementById("title").innerHTML="Workout";
+	document.getElementById("title").innerHTML="WORKOUT";
 	current="workout";
 	timer(180);
 	document.getElementById("stop").style.visibility = "hidden"; //you can't stop in the middle of working out
 	document.getElementById("instruction").innerHTML= "Get Ready<br>Workout starts in 10 seconds";
-	setTimeout(function(){document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>30 seconds";whistle.play();},10*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},40*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>30 seconds";whistle.play();},50*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},80*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="SQUATS"+"<br>30 seconds";whistle.play();},90*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},120*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>30 seconds";whistle.play();},130*1000);
-	setTimeout(function(){document.getElementById("instruction").innerHTML="Hydrate yourself &#128166; <br>Get ready to start studying";whistle.play();},160*1000);
+	workout1=setTimeout(function(){document.getElementById("instruction").innerHTML="PUSH-UPS"+"<br>30 seconds";whistle.play();},10*1000);
+	workout2=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},40*1000);
+	workout3=setTimeout(function(){document.getElementById("instruction").innerHTML="JUMPING JACKS"+"<br>30 seconds";whistle.play();},50*1000);
+	workout4=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},80*1000);
+	workout5=setTimeout(function(){document.getElementById("instruction").innerHTML="SQUATS"+"<br>30 seconds";whistle.play();},90*1000);
+	workout6=setTimeout(function(){document.getElementById("instruction").innerHTML="REST"+"<br>10 seconds";whistle.play();},120*1000);
+	workout7=setTimeout(function(){document.getElementById("instruction").innerHTML="SIT-UPS"+"<br>30 seconds";whistle.play();},130*1000);
+	workout8=setTimeout(function(){document.getElementById("instruction").innerHTML="Hydrate yourself &#128166; <br>Get ready to start studying";whistle.play();},160*1000);
 }
 
 function study(){
@@ -266,12 +291,31 @@ function breakTime(){
 	document.getElementById("instruction").innerHTML="5 minutes to relax &#128524;";
 }
 
+//formats study time and workout time totals for the end congratulation message
+function formatTotal(time){
+	second=time%60;
+	minute=Math.floor(((time-second)/60)%60);
+	hour=Math.floor(((time-second/60)-minute)/60);
+	return pad(hour)+":"+pad(minute)+":"+pad(second)
+}
+
+//add padding if necessary
+function pad(no){
+	if(no==0){
+		return "00";
+	} else if (no<10) {
+		return "0"+no;
+	} else {
+		return ""+no;
+	}
+}
+
 
 timerHTML=`
 <b><p style="font-size:15px;" id="global"></p></b>
 <div id="container">
   <img id="image" src="img/timerWhite3.png">
-  <p id="title">WORKOUT</p>
+  <p id="title"></p>
   <p id="text"></p> 
 </div>
 <button onclick="javascript:stop()" class="btn btn-secondary" id="stop"> Pause </button>
