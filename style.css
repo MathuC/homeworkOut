@@ -1,0 +1,143 @@
+html{
+	font-family:Copperplate;
+	
+}
+
+body{
+	max-width: 100%;
+	/*background: url("ArtistsImg/backgroundGrey.png"), linear-gradient(to top,rgba(250,170,170,0.85) , rgba(250,100,100,0.85));*/
+	background: url("img/background.png"), linear-gradient(to top,rgba(255,255,255,0.85) , rgba(255,255,255,1));
+	background-blend-mode: overlay;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	color: black; /*overrites bootstrap color which is dark grey */
+	margin:4px;
+}
+
+img{
+	max-width: 100%;
+	height:auto;
+	
+}
+
+
+
+
+
+
+
+
+#leftbox { 
+	float:left;  
+	width:33%; 
+	height:280px; 
+} 
+#middlebox{ 
+	float:left;  
+	width:33%; 
+	height:280px; 
+} 
+#rightbox{ 
+	float:right; 
+	width:33%; 
+	height:280px; 
+} 
+
+h1{
+	font-family:Courier;
+	font-weight:normal;	
+	font-size: 40px;
+	margin-left:5px;
+	margin-top:0px;
+}
+
+h5 {
+	font-weight:bold;
+	font-family: Courier;
+}
+
+h3, h4, h2 {
+	font-weight:normal;
+	font-family: Courier;
+}
+
+
+p {
+	font-family: Courier ; 
+	font-size: 13px;
+	line-height:12px;
+	margin-bottom:4px;
+	margin-left:0px;
+}
+
+ul {
+	font-family: Courier ; 
+	font-size: 13px;
+	line-height:12px;
+	margin-bottom:4px;
+	margin-left:0px;
+}
+
+#footnote {
+	font-size: 12px; 
+	font-weight:normal; 
+	font-family:Courier; 
+	color:black;
+}
+
+
+#container {
+  height: 300px;
+  width: 600px;
+  position: relative;
+}
+#image {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#text {
+	font-family: Verdana;
+	z-index: 100;
+	position: absolute;
+	color: black;
+	font-size: 75px;
+	font-weight: bold;
+	left: 183px;
+	top: 150px;
+}
+
+
+.col-md-4{
+	background: rgba(250,150,150,0.4);
+	padding:30px;
+}
+
+
+/*Button to start timer */
+.btn-primary {
+    background-color: #00A000 !important; /*Overrides bootstrap's class. Found these properties going on the link of bootstrap cdn and control+f ".btn-primary" */
+	border-color:#999999 !important;
+	font-weight:bold !important;
+}
+
+.btn-primary:hover {
+	background-color: #707070 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,132 @@
+<html>
+<head> 
+	<title>HOMEwork out</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--Link to boostrap to make a professional submit page -->	
+	<link rel="stylesheet" type="text/css" href="style.css"> 
+	<link rel="stylesheet" type="text/css" href="animate.css"> <!--Link to animate.css to make a page with dynamic elements when loading -->
+	<link rel="shortcut icon" href="img/favicon.png">
+</head>
+<body>
+<a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-6px;position:absolute;color:black;left:6;" href="https://mathusan.net">mathusan.net</a>
+<a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-7px;position:absolute;color:black;right:0;" href="about.html">ABOUT</a>
+<br>
+<center>
+	<img src="img/title.png" width="600" height="80" class="animate__animated animate__flipInX">
+</center>
+<br>
+<h5 align="center">Workout. Study. Play. Repeat.</h5>
+<br>
+<center>
+<div id="replace">
+	<div class="container">
+		<div class="login-box">
+				<div class="col-md-4"> <!--As you can see there are twoo classes. The class that is at the right overrides the bootstrap class if they overlap. Bootstrap class. There are 12 columns so col-md-6 means there will be 2 columns -->
+					<h1>TIMER</h1>
+					<form action="javascript:userStart()" method="get" autocomplete= off> <!-- This explains very well HTML forms and the type attribute https://www.w3schools.com/tags/att_input_type.asp -->
+						<div class="form-group">
+							<label>Duration (Hours)</label>
+							<select class="form-control" id="duration" name="duration">
+								<option>0:30</option>
+								<option selected="selected">1:00</option>
+								<option>1:30</option>
+								<option>2:00</option>
+								<option>2:30</option>
+								<option>3:00</option>
+								<option>3:30</option>
+								<option>4:00</option>
+								<option>4:30</option>
+								<option>5:00</option>
+								<option>5:30</option>
+								<option>6:00</option>
+								<option>6:30</option>
+								<option>7:00</option>
+								<option>7:30</option>
+								<option>8:00</option>
+								<option>8:30</option>
+								<option>9:00</option>
+								<option>9:30</option>
+								<option>10:00</option>
+								<option>10:30</option>
+								<option>11:00</option>
+								<option>11:30</option>
+								<option>12:00</option>
+							</select>
+							<br>
+							<label>Fitness</label>
+							<select class="form-control" id="fitness" name="fitness">
+								<option>Beginner</option>
+								<option>Advanced</option>
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary"> Start </button>
+					</form>
+				</div>
+		</div>
+	</div>
+</div>
+</center>
+<br><br><br>
+<p id="footnote" align="center">Created By Mathusan Chandramohan & Louca Dufault for McGill Code.Jam 2020</p>
+</body>
+<script>
+var fitness; //fitness level
+var duration=0; //duration of timer
+
+
+function userStart() { //when user presses start
+	rawDuration= document.getElementById("duration").value;
+	listDur=rawDuration.split(":");
+	for (i=0; i<2; i++) { //adds to duration variable number of 30 minuts rounds needed
+		if (i==0){
+			duration=duration+parseInt(listDur[i])*2;
+		} else {
+			if (listDur[i]=="30") {
+				duration=duration+1;
+			}
+		}
+	}
+	fitness= document.getElementById("fitness").value;
+	console.log(fitness, duration);
+	document.getElementById("replace").innerHTML=timerHTML;
+	timer(3);
+}
+
+function timer(t){ //t is in seconds
+	function decrement(){
+		minute=(t-t%60)/60;
+		second=t%60;
+		if (t>599){
+			if (second<10) {
+				display=""+minute+":"+"0"+second;
+			} else if (second==0) {
+				display=""+minute+":"+"00";
+			} else {
+				display=""+minute+":"+second;
+			}
+		} else if (t>59) {
+			display="0"+minute+":"+second;
+		} else if (t>9) {
+			display="00"+":"+second;
+		} else {
+			display="00:0"+second;
+		}
+		t=t-1;
+		document.getElementById("text").innerHTML=display;
+		if (t!=-1) {
+			setTimeout(decrement,1000);
+		}
+	}
+	decrement();
+}
+
+timerHTML=`
+<div id="container">
+  <img id="image" src="img/timerWhite2.png" />
+  <p id="text"></p>
+</div>
+`;
+
+
+</script>
+</html>
