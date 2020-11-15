@@ -9,7 +9,7 @@
 </head>
 <body>
 <a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-6px;position:absolute;color:black;left:6;" href="https://mathusan.net">mathusan.net</a>
-<a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-7px;position:absolute;color:black;right:0;" href="about.html">ABOUT</a>
+<a style="font-size:20px;font-family:Courier;margin-right:5px;margin-top:-7px;position:absolute;color:black;right:0;" href="about.html">About HomeworkOut</a>
 <br>
 <center>
 	<img src="img/title.png" width="600" height="80" class="animate__animated animate__flipInX">
@@ -72,28 +72,35 @@
 <script>
 var fitness; //fitness level
 var duration=0; //duration of timer
+stopBtn=0; //stop button not clicked
+var alarm = new Audio('Audio/alarm.wav');
 
 
 function userStart() { //when user presses start
 	rawDuration= document.getElementById("duration").value;
 	listDur=rawDuration.split(":");
-	for (i=0; i<2; i++) { //adds to duration variable number of 30 minuts rounds needed
-		if (i==0){
-			duration=duration+parseInt(listDur[i])*2;
-		} else {
-			if (listDur[i]=="30") {
-				duration=duration+1;
-			}
-		}
+	duration=duration+parseInt(listDur[0])*2;
+	if (listDur[1]=="30") {
+		duration=duration+1;
 	}
 	fitness= document.getElementById("fitness").value;
 	console.log(fitness, duration);
 	document.getElementById("replace").innerHTML=timerHTML;
 	timer(3);
+	document.getElementById("stop").addEventListener("click", stop()); //without this line the onclick event is activated when you click on the button so you have to click it 2 times first for it to work.
 }
 
 function timer(t){ //t is in seconds
+	if (t === undefined) {
+		rawT= document.getElementById("text").innerHTML;
+		listT=rawT.split(":");
+		t=parseInt(listT[0])*60;
+		t=t+parseInt(listT[1]);
+	}
 	function decrement(){
+		if (stopBtn==1) {
+			return; //if Stop button has been clicked
+		}
 		minute=(t-t%60)/60;
 		second=t%60;
 		if (t>599){
@@ -113,19 +120,40 @@ function timer(t){ //t is in seconds
 		}
 		t=t-1;
 		document.getElementById("text").innerHTML=display;
-		if (t!=-1) {
+		if (t>-1 && stopBtn==0) {
 			setTimeout(decrement,1000);
+		}
+		if(t==-1){
+			alarm.play();
 		}
 	}
 	decrement();
 }
 
+function stop(){
+	if (document.getElementById("stop").innerHTML=="Stop") {
+		document.getElementById("stop").innerHTML="Resume";
+		stopBtn=1; //clicked
+	} else {
+		document.getElementById("stop").innerHTML="Stop";
+		stopBtn=0;
+		timer();
+	}
+}
+
+function workout(){
+	timer
+
+}
+
 timerHTML=`
 <div id="container">
-  <img id="image" src="img/timerWhite2.png" />
-  <p id="text"></p>
+  <img id="image" src="img/timerWhite3.png">
+  <p id="text"></p> 
 </div>
+<button onclick="stop()" class="btn btn-secondary" id="stop"> Stop </button>
 `;
+
 
 
 </script>

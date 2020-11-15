@@ -88,16 +88,22 @@ ul {
 
 
 #container {
-  height: 300px;
   width: 600px;
+  height: 270px;
   position: relative;
+  margin:0;
+  padding:0;
 }
 #image {
   position: absolute;
   left: 0;
   top: 0;
+  margin:0;
+  padding:0;
 }
 #text {
+	margin:0;
+	padding:0;
 	font-family: Verdana;
 	z-index: 100;
 	position: absolute;
@@ -126,6 +132,15 @@ ul {
 	background-color: #707070 !important;
 }
 
+.btn-secondary {
+    background-color: #E00000 !important; /*Overrides bootstrap's class. Found these properties going on the link of bootstrap cdn and control+f ".btn-primary" */
+	border-color:#999999 !important;
+	font-weight:bold !important;
+}
+
+.btn-secondary:hover #stop {
+	background-color: #A00000 !important;
+}
 
 
 
