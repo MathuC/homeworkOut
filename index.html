@@ -115,7 +115,8 @@ function userStart() { //when user presses start
 }
 
 function globalTimer(){
-	var tg=duration*30*60;
+	//var tg=duration*30*60;
+	var tg=4;
 	function globalDecrement(){
 		second=tg%60;
 		minute=((tg-second)/60)%60;
@@ -224,6 +225,11 @@ function timer(t){ //t is in seconds
 			
 			document.getElementById("instruction").innerHTML="Congratulations!<br>You've reached your goal: "+challenge+"<br>"+"Total study time: "+formatTotal(studyTime)+"<br>"+"Total workout time: "+formatTotal(workoutTime);
 			document.getElementById("title").innerHTML="";
+			setTimeout(
+				function(){
+					nickname = prompt("Enter a nickname so that your stats are shown on the homepage");
+					sendData();
+			},1000);
 		}
 		if (t>-1 && stopBtn==0) {
 			setTimeout(decrement,1000);
@@ -305,6 +311,16 @@ function pad(no){
 		return "0"+no;
 	} else {
 		return ""+no;
+	}
+}
+
+function sendData(){
+	if (nickname != null) {
+		nickname=nickname.trim();
+		nickname=nickname.substring(0,15);
+		var ajax= new XMLHttpRequest();
+		ajax.open("GET", "add.php?nickname="+nickname+"&study="+studyTime+"&workout="+workoutTime, true); 
+		ajax.send();
 	}
 }
 
