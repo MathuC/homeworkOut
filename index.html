@@ -45,18 +45,12 @@
 								<option>8:00</option>
 								<option>8:30</option>
 								<option>9:00</option>
-								<option>9:30</option>
-								<option>10:00</option>
-								<option>10:30</option>
-								<option>11:00</option>
-								<option>11:30</option>
-								<option>12:00</option>
 							</select>
 							<br>
 							<label>Fitness</label>
 							<select class="form-control" id="fitness" name="fitness">
 								<option>Beginner</option>
-								<option>Advanced</option>
+								<option selected="selected">Advanced</option>
 							</select>
 						</div>
 						<button type="submit" class="btn btn-primary"> Start </button>
@@ -74,6 +68,8 @@ var fitness; //fitness level
 var duration=0; //duration of timer
 stopBtn=0; //stop button not clicked
 var alarm = new Audio('Audio/alarm.wav');
+var clap = new Audio('Audio/clap.mp3');
+var clock = new Audio('Audio/clock.wav');
 
 
 function userStart() { //when user presses start
@@ -84,10 +80,68 @@ function userStart() { //when user presses start
 		duration=duration+1;
 	}
 	fitness= document.getElementById("fitness").value;
-	console.log(fitness, duration);
+	if (fitness=="Beginner") {
+		work=20;
+		rest=20;
+	} else {
+		work=5;
+		rest=5;
+	}
 	document.getElementById("replace").innerHTML=timerHTML;
-	timer(3);
+	globalTimer();
+	workout();
 	document.getElementById("stop").addEventListener("click", stop()); //without this line the onclick event is activated when you click on the button so you have to click it 2 times first for it to work.
+}
+
+function globalTimer(){
+	//var t=duration*30*60;
+	var t=10
+	function globalDecrement(){
+		second=t%60;
+		minute=((t-second)/60)%60;
+		hour=((t-second)/60-minute)/60;
+		if (t>3599){
+			display=""+hour+":";
+		} else {
+			display="0:";
+		}
+		if (t-hour*60*60>599){
+			if (second==0) {
+				display=display+""+minute+":"+"00";
+			} else if (second<10) {
+				display=display+""+minute+":"+"0"+second;
+			} else {
+				display=display+""+minute+":"+second;
+			}
+		} else if (t-hour*60*60>59) {
+			if (second==0) {
+				display=display+"0"+minute+":"+"00";
+			} else if (second<10) {
+				display=display+"0"+minute+":"+"0"+second;
+			} else {
+				display=display+"0"+minute+":"+second;
+			}
+		} else {
+			if (second==0) {
+				display=display+"00"+":"+"00";
+			} else if (second<10) {
+				display=display+"00"+":"+"0"+second;
+			} else {
+				display=display+"00"+":"+second;
+			}
+		} 
+		t=t-1;
+		document.getElementById("global").innerHTML="Total Time Remaining: "+display;
+		if (t>-1) {
+			setTimeout(globalDecrement,1000);
+		}
+		if(t==-1){
+			clap.play(); 
+			clearTimeout(next); //stop everything
+			document.getElementById("text").innerHTML="Done.";
+		}
+	}
+	globalDecrement();
 }
 
 function timer(t){ //t is in seconds
@@ -104,27 +158,40 @@ function timer(t){ //t is in seconds
 		minute=(t-t%60)/60;
 		second=t%60;
 		if (t>599){
-			if (second<10) {
-				display=""+minute+":"+"0"+second;
-			} else if (second==0) {
+			if (second==0) {
 				display=""+minute+":"+"00";
+			} else if (second<10) {
+				display=""+minute+":"+"0"+second;
 			} else {
 				display=""+minute+":"+second;
 			}
 		} else if (t>59) {
-			display="0"+minute+":"+second;
-		} else if (t>9) {
-			display="00"+":"+second;
+			if (second==0) {
+				display="0"+minute+":"+"00";
+			} else if (second<10) {
+				display="0"+minute+":"+"0"+second;
+			} else {
+				display="0"+minute+":"+second;
+			}
 		} else {
-			display="00:0"+second;
-		}
+			if (second==0) {
+				display="00"+":"+"00";
+			} else if (second<10) {
+				display="00"+":"+"0"+second;
+			} else {
+				display="00"+":"+second;
+			}
+		} 
 		t=t-1;
 		document.getElementById("text").innerHTML=display;
 		if (t>-1 && stopBtn==0) {
-			setTimeout(decrement,1000);
+			next=setTimeout(decrement,1000);
+		}
+		if(t==2){ //signals approaching alarm
+			clock.play();
 		}
 		if(t==-1){
-			alarm.play();
+			alarm.play(); 
 		}
 	}
 	decrement();
@@ -142,9 +209,9 @@ function stop(){
 }
 
 function workout(){
-	timer
-
+	timer(15);
 }
+
 
 timerHTML=`
 <div id="container">
@@ -152,6 +219,8 @@ timerHTML=`
   <p id="text"></p> 
 </div>
 <button onclick="stop()" class="btn btn-secondary" id="stop"> Stop </button>
+<br><br>
+<b><p style="font-size:15px;" id="global"></p></b>
 `;
 
 
