@@ -8,11 +8,7 @@ HomeworkOut guides you through cycles of 3 minute bodyweight workouts, 22 minute
 All the logos/images were made by me (Adobe Photoshop and Adobe Animate).
 
 
-Click this link: 
-
-[HomeworkOut](https://mathusan.net/HomeworkOut/index.php)
-
-to try it out.
+Try it out here: [HomeworkOut](https://mathusan.net/HomeworkOut/index.php)
 
 
 ## Components
