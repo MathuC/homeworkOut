@@ -9,9 +9,9 @@ All the logos/images were made by me (Adobe Photoshop and Adobe Animate).
 
 
 Go to 
-```
+
 [mathusan.net/HomeworkOut/index.php]https://mathusan.net/HomeworkOut/index.php
-``` 
+
 to try it out.
 
 
