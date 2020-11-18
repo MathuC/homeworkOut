@@ -10,7 +10,7 @@ All the logos/images were made by me (Adobe Photoshop and Adobe Animate).
 
 Click this link: 
 
-[HomeworkOut] https://mathusan.net/HomeworkOut/index.php
+[HomeworkOut](https://mathusan.net/HomeworkOut/index.php)
 
 to try it out.
 
